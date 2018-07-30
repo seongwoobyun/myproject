@@ -1,7 +1,6 @@
-### Pup
-A boilerplate for products.
+### Headline Beta.
 
-[Read the Documentation](http://cleverbeagle.com/pup)
+News sharing application
 
 ---
 
