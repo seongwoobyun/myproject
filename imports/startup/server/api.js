@@ -7,3 +7,5 @@ import '../../api/Users/server/methods';
 import '../../api/Users/server/publications';
 
 import '../../api/Utility/server/methods';
+import '../../api/Pups/methods';
+import '../../api/Pups/server/publications';

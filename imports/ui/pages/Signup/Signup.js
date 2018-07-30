@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { Row, Col, FormGroup, ControlLabel, InputGroup, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
@@ -27,6 +27,9 @@ class Signup extends React.Component {
         lastName: {
           required: true,
         },
+        username: {
+          reuired: true,
+        },
         emailAddress: {
           required: true,
           email: true,
@@ -43,23 +46,34 @@ class Signup extends React.Component {
         lastName: {
           required: 'What\'s your last name?',
         },
+        username: {
+          required: 'What\'s a good username?',
+        },
         emailAddress: {
           required: 'Need an email address here.',
           email: 'Is this email address correct?',
         },
         password: {
-          required: 'Need a password here.',
+          required: 'Please enter a password.',
           minlength: 'Please use at least six characters.',
         },
       },
       submitHandler() { component.handleSubmit(); },
+      errorPlacement(error, element) {
+        if (element.context.name === 'username') {
+          error.insertAfter('.username-input-group');
+        } else {
+          error.insertAfter(element);
+      }
+      },
     });
   }
 
   handleSubmit() {
     const { history } = this.props;
-
+    const username = this.username.value.replace(/\W/g, '');
     Accounts.createUser({
+      username,
       email: this.emailAddress.value,
       password: this.password.value,
       profile: {
@@ -84,17 +98,6 @@ class Signup extends React.Component {
       <Row>
         <Col xs={12} sm={6} md={5} lg={4}>
           <h4 className="page-header">Sign Up</h4>
-          <Row>
-            <Col xs={12}>
-              <OAuthLoginButtons
-                services={['facebook', 'github', 'google']}
-                emailMessage={{
-                  offset: 97,
-                  text: 'Sign Up with an Email Address',
-                }}
-              />
-            </Col>
-          </Row>
           <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             <Row>
               <Col xs={6}>
@@ -120,6 +123,21 @@ class Signup extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
+
+            <FormGroup>
+              <ControlLabel>Username</ControlLabel>
+              <InputGroup className="username-input-group">
+                <InputGroup.Addon>@</InputGroup.Addon>
+                <input
+                  type="text"
+                  name="username"
+                  ref={username => (this.username = username)}
+                  className="form-control"
+                  placeholder="cleverbeagle"
+                />
+
+              </InputGroup> 
+            </FormGroup>
             <FormGroup>
               <ControlLabel>Email Address</ControlLabel>
               <input

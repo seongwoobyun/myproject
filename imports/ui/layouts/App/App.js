@@ -12,10 +12,9 @@ import Navigation from '../../components/Navigation/Navigation';
 import Authenticated from '../../components/Authenticated/Authenticated';
 import Public from '../../components/Public/Public';
 import Index from '../../pages/Index/Index';
-import Documents from '../../pages/Documents/Documents';
-import NewDocument from '../../pages/NewDocument/NewDocument';
-import ViewDocument from '../../pages/ViewDocument/ViewDocument';
-import EditDocument from '../../pages/EditDocument/EditDocument';
+import Feed from '../../pages/Feed/Feed';
+import ViewPup from '../../pages/ViewPup/ViewPup';
+import Username from '../../pages/Username/Username';
 import Signup from '../../pages/Signup/Signup';
 import Login from '../../pages/Login/Login';
 import Logout from '../../pages/Logout/Logout';
@@ -48,11 +47,10 @@ const App = props => (
       <Navigation {...props} />
       <Grid>
         <Switch>
+          {!props.authenticated ? <Route exact name="index" path="/" component={Index} /> : ''}
+          {props.authenticated ? <Authenticated exact name="feed" path="/" component={Feed} {...props} /> : ''}
+          <Route name="viewPup" path="/pups/:_id" component={ViewPup} />
           <Route exact name="index" path="/" component={Index} />
-          <Authenticated exact path="/documents" component={Documents} {...props} />
-          <Authenticated exact path="/documents/new" component={NewDocument} {...props} />
-          <Authenticated exact path="/documents/:_id" component={ViewDocument} {...props} />
-          <Authenticated exact path="/documents/:_id/edit" component={EditDocument} {...props} />
           <Authenticated exact path="/profile" component={Profile} {...props} />
           <Public path="/signup" component={Signup} {...props} />
           <Public path="/login" component={Login} {...props} />
@@ -63,6 +61,7 @@ const App = props => (
           <Route name="terms" path="/terms" component={Terms} />
           <Route name="privacy" path="/privacy" component={Privacy} />
           <Route name="examplePage" path="/example-page" component={ExamplePage} />
+          <Route exact path="/:username" component={Username} />
           <Route component={NotFound} />
         </Switch>
       </Grid>
